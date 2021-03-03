@@ -1,0 +1,25 @@
+drop database repair_agency3;
+create database repair_agency3;
+use repair_agency3;
+create table agency_users
+(
+    id             bigint       not null auto_increment primary key,
+    client_account int          null,
+    active         bit          null,
+    user_password  varchar(255) null,
+    user_name      varchar(255) null,
+    user_role      varchar(255) null
+);
+create table user_orders
+(
+    id            bigint       not null auto_increment primary key,
+    category      varchar(255) null,
+    description   varchar(255) null,
+    master_id     varchar(255) null,
+    model         varchar(255) null,
+    order_price   int          null,
+    state_manager varchar(255) null,
+    state_master  varchar(255) null,
+    client_id     bigint       null,
+    foreign key (client_id) references agency_users (id)
+);
