@@ -1,6 +1,5 @@
-drop database repair_agency;
 create database repair_agency;
-use repair_agency3;
+use repair_agency;
 create table agency_users
 (
     id             bigint       not null auto_increment primary key,
