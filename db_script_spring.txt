@@ -1,5 +1,5 @@
-drop database repair_agency3;
-create database repair_agency3;
+drop database repair_agency;
+create database repair_agency;
 use repair_agency3;
 create table agency_users
 (
