@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Master cabinet</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <header id="navtop">
+        <nav class="logo fleft">
+            <img th:src="@{/images/logo_old_logo.png}" alt="Repair Agency">
+            <a href="/" class="navactive">Repair agency "Anti butter-fingers!"</a>
+        </nav>
+        <nav class="fright">
+            <ul>
+                <a href="/" class="navactive">Home</a>
+            </ul>
+            <ul>
+                <a th:href="@{'?locale=en'}">
+                    <img th:src="@{/images/english.png}" alt="English">
+                </a>
+            </ul>
+            <ul>
+                <a th:href="@{'?locale=ua'}">
+                    <img th:src="@{/images/ukrainian.png}" alt="Ukrainian">
+                </a>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="home-page main">
+        <div class="container" align="left">
+            <div th:if="${not #lists.isEmpty(orders)}">
+                <h2>List of orders</h2>
+                <table class="table" id="orders" border=1 bordercolor="#000000" cellpadding=10>
+                    <tr>
+                        <th>Category</th>
+                        <th>Model</th>
+                        <th>Description</th>
+                        <th>Progress info</th>
+                        <th>Price</th>
+                        <th>Change status</th>
+                        <th>Assign price</th>
+                    </tr>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.category}"></td>
+                        <td th:text="${order.modelOrder}"></td>
+                        <td th:text="${order.description}"></td>
+                        <td th:text="${order.stateMaster}"></td>
+                        <td th:text="${order.orderPrice}"></td>
+                        <td><a th:href="@{/master/changeprogresstatus/{id}(id=${order.id})}">Change</a></td>
+                        <td><a th:href="@{/master/assignprice/{id}(id=${order.id})}">Assign price</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p></p>
+    </div>
+</div>
+
+</body>
+</html>

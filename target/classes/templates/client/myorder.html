@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{/css/style.css}">
+    <title th:text="#{message16}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div class="container">
+
+    <header id="navtop">
+        <nav class="logo fleft">
+            <img th:src="@{/images/logo_old_logo.png}" alt="Repair Agency">
+            <a href="/" class="navactive" th:text="#{message8}"></a>
+        </nav>
+        <nav class="fright">
+            <ul>
+                <a href="/" class="navactive" th:text="#{message9}"></a>
+            </ul>
+            <ul>
+                <a th:href="@{'?locale=en'}">
+                    <img th:src="@{/images/english.png}" alt="English">
+                </a>
+            </ul>
+            <ul>
+                <a th:href="@{'?locale=ua'}">
+                    <img th:src="@{/images/ukrainian.png}" alt="Ukrainian">
+                </a>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="home-page main">
+        <div class="container" align="left">
+            <div th:if="${not #lists.isEmpty(orders)}">
+                <h2>My orders</h2>
+                <table class="table table-striped" id="orders" border=1 bordercolor="#000000" cellpadding=10>
+                    <tr>
+                        <th th:text="#{message17}"></th>
+                        <th th:text="#{message18}"></th>
+                        <th th:text="#{message19}"></th>
+                        <th th:text="#{message20}"></th>
+                        <th th:text="#{message21}"></th>
+                        <th th:text="#{message22}"></th>
+                    </tr>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.category}"></td>
+                        <td th:text="${order.description}"></td>
+                        <td th:text="${order.modelOrder}"></td>
+                        <td th:text="${order.stateManager}"></td>
+                        <td th:text="${order.stateMaster}"></td>
+                        <td th:text="${order.orderPrice}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <form action="/client/neworder" target="_blank">
+            <button class="custom_button2" th:text="#{message23}"></button>
+        </form>
+        <p></p>
+    </div>
+</body>
+</html>
