@@ -1,18 +1,25 @@
 package com.project.aynat.service;
 
-import com.project.aynat.domain.*;
+import com.project.aynat.domain.AgencyUser;
+import com.project.aynat.domain.Order;
+import com.project.aynat.domain.StateManager;
+import com.project.aynat.domain.StateMaster;
 import com.project.aynat.dto.OrderDTO;
+import com.project.aynat.dto.PriceDTO;
 import com.project.aynat.repository.OrderRepository;
 import com.project.aynat.repository.UserRepository;
 import com.project.aynat.util.DTOtoOrder;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OrderService {
+    private static final Logger LOG = Logger.getLogger(OrderService.class);
 
     @Autowired
     private OrderRepository orderRepository;
@@ -23,64 +30,53 @@ public class OrderService {
     @Autowired
     private DTOtoOrder dtoToOrderConverter;
 
-    @Autowired
-
-    public Iterable<Order> findAllOrders() {
-        Iterable<Order> orders = orderRepository.findAll();
-        return orders;
+    public List<Order> findAllOrders() {
+        return orderRepository.findAll();
     }
 
-    @Transactional
-    public boolean chooseMaster(Long id, String masterForOrder) {
-        Order order = orderRepository.findById(id).orElse(null);
-        order.setMasterId(masterForOrder);
+    public boolean chooseMaster(Long id, String master) {
         try {
-            orderRepository.save(order);
+            orderRepository.insertMasterForOrder(master, id);
         } catch (Exception e) {
+            LOG.error("Problem occurred during choose master method", e);
             return false;
         }
         return true;
     }
 
     @Transactional
-    public boolean choosePaymentStatus(Long orderId, StateManager paymentStatus) {
-        if (paymentStatus == StateManager.PAID) {
+    public boolean choosePaymentStatus(Long orderId, StateManager stateManager) {
+        if (stateManager == StateManager.PAID) {
             countMoney(orderId);
         }
-        Order order = orderRepository.findById(orderId).orElse(null);
-        order.setStateManager(paymentStatus.name());
         try {
-            orderRepository.save(order);
+            orderRepository.insertManagerState(stateManager.name(), orderId);
         } catch (Exception e) {
+            LOG.error("Problem occurred during choose payment status method", e);
             return false;
         }
         return true;
     }
 
-    public Iterable<Order> findAllMasterOrders(String masterName) {
-        Iterable<Order> orders = orderRepository.findAllByMasterId(masterName);
-        return orders;
+    public List<Order> findAllMasterOrders(String masterName) {
+        return orderRepository.findAllByMasterId(masterName);
     }
 
-    @Transactional
-    public boolean changeProgress(Long Id, StateMaster progressStatus) {
+    public boolean chooseProgressStatus(Long id, StateMaster stateMaster) {
         try {
-            Order order = orderRepository.findById(Id).orElse(null);
-            order.setStateMaster(progressStatus.name());
-            orderRepository.save(order);
+            orderRepository.insertMasterState(stateMaster.name(), id);
         } catch (Exception e) {
+            LOG.error("Problem occurred during choose progress status method", e);
             return false;
         }
         return true;
     }
 
-    @Transactional
-    public boolean setPrice(Long id, int assignedPrice) {
+    public boolean setPrice(PriceDTO priceDTO) {
         try {
-            Order order = orderRepository.findById(id).orElse(null);
-            order.setOrderPrice(assignedPrice);
-            orderRepository.save(order);
+            orderRepository.insertPriceForOrder(priceDTO.getOrderPrice(), priceDTO.getId());
         } catch (Exception e) {
+            LOG.error("Problem occurred during setting price method", e);
             return false;
         }
         return true;
@@ -98,7 +94,7 @@ public class OrderService {
             order.setClientId(client);
             orderRepository.save(order);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Problem occurred during inserting into user_orders table", e);
             return false;
         }
         return true;
@@ -106,10 +102,15 @@ public class OrderService {
 
     @Transactional
     public boolean countMoney(Long orderId) {
-        Optional<Order> order = orderRepository.findById(orderId);
-        AgencyUser client = order.get().getClientId();
-        client.setAccount(client.getAccount() - order.get().getOrderPrice());
-        userRepository.save(client);
+        try {
+            Optional<Order> order = orderRepository.findById(orderId);
+            AgencyUser client = order.get().getClientId();
+            client.setAccount(client.getAccount() - order.get().getOrderPrice());
+            userRepository.save(client);
+        } catch (Exception e){
+            LOG.error("Problem occurred during count money method", e);
+            return false;
+        }
         return true;
     }
 }

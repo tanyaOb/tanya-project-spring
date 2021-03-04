@@ -15,12 +15,12 @@
     <header id="navtop">
         <nav class="logo fleft">
             <img th:src="@{/images/logo_old_logo.png}" alt="Repair Agency">
-            <a href="/" class="navactive">Repair agency "Anti butter-fingers!"</a>
+            <a href="/" class="navactive" th:text="#{message8}"></a>
         </nav>
         <nav class="fright">
             <ul>
-                </li><a href="/" class="navactive">Home</a></li>
-                <li><a href="/client/myorder">My orders</a></li>
+                </li><a href="/" class="navactive" th:text="#{message9}"></a></li>
+                <li><a href="/client/myorder" th:text="#{message28}"></a></li>
             </ul>
             <ul>
                 <a th:href="@{'?locale=en'}">
@@ -38,7 +38,7 @@
     <div class="home-page main">
         <section class="grid-wrap">
             <div class="slider grid col-one-half mq2-col-full">
-                <h2>Create new order</h2>
+                <h2 th:text="#{message23}"></h2>
                 <form th:action="@{/client/neworder}" method="post">
                     <select class="checkField" name="category">
                         <option th:each="category : ${T(com.project.aynat.domain.Category).values()}"
@@ -47,12 +47,14 @@
                         </option>
                     </select>
                     <p></p>
-                    <label>Model: <input type="text" class="textField2" name="modelOrder"></label>
-                    <label>Description: <input type="text" class="textField2" name="description"></label>
+                    <label th:text="#{message19}"></label><input type="text" class="textField2" name="modelOrder"><p></p>
+                    <label th:text="#{message18}"></label><input type="text" class="textField2" name="description">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <p></p>
-                    <div><input type="submit" class="custom_button" value="Create order"/></div>
+                    <div><input type="submit" class="custom_button" th:value="#{message29}"/></div>
                 </form>
+                <br>
+                <h2 th:text="${message}"></h2>
             </div>
             <div class="slider grid col-one-half mq2-col-full">
                 <figure>

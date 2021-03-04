@@ -43,12 +43,13 @@
 
             <div class="slider grid col-one-half mq2-col-full">
                 <form th:action="@{/login}" method="post">
-                    <label>Your name: <input type="text" name="username" class="textField"></label>
-                    <label>Your password: <input type="password" name="password" class="passField"
-                                                 autocomplete="on"></label>
+                    <label th:text="#{message26}"></label><input type="text" name="username" class="textField">
+                    <p></p>
+                    <label th:text="#{message27}"></label><input type="password" name="password" class="passField"
+                                                 autocomplete="on">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <p></p>
-                    <div><input type="submit" class="custom_button" value="Sign In"/></div>
+                    <div><input type="submit" class="custom_button" th:value="#{message25}"/></div>
                 </form>
                 <form action="/registration" target="_blank">
                     <button class="custom_button" th:text="#{message4}"></button>

@@ -45,12 +45,15 @@
                         </option>
                     </select>
                     <p></p>
-                    <div><label>Your name: <input type="text" class="textField" name="userName"/> </label></div>
-                    <div><label>Your password: <input type="password" class="passField" name="password"/> </label></div>
+                    <div><label th:text="#{message26}"></label><input type="text" class="textField" name="userName"/></div>
+                    <p></p>
+                    <div><label th:text="#{message27}"></label><input type="password" class="passField" name="password"/></div>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <br>
-                    <div><input type="submit" class="custom_button" value="Registration"/></div>
+                    <div><input type="submit" class="custom_button" th:value="#{message4}"/></div>
                 </form>
+                <br>
+                <h2 th:text="${error_message}"></h2>
             </div>
             <div class="slider grid col-one-half mq2-col-full">
                 <figure>

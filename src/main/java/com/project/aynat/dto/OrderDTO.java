@@ -3,9 +3,12 @@ package com.project.aynat.dto;
 import com.project.aynat.domain.AgencyUser;
 import com.project.aynat.domain.Category;
 
+import javax.validation.constraints.NotEmpty;
+
 public class OrderDTO {
     private Long id;
     private Category category;
+    @NotEmpty(message = "Model field can't be empty")
     private String modelOrder;
     private String description;
     private String stateMaster;

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <title>Manager cabinet</title>
+    <title th:text="#{message40}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{/css/style.css}">
 </head>
@@ -14,13 +14,13 @@
     <header id="navtop">
         <nav class="logo fleft">
             <img th:src="@{/images/logo_old_logo.png}" alt="Repair Agency">
-            <a href="/" class="navactive">Repair agency "Anti butter-fingers!"</a>
+            <a href="/" class="navactive" th:text="#{message8}"></a>
         </nav>
         <nav class="fright">
             <ul>
-                <li><a href="/" class="navactive">Home</a>
+                <li><a href="/" class="navactive" th:text="#{message9}"></a>
                 <li>
-                <li><a href="/manager/manageorders" class="navactive">Client orders</a>
+                <li><a href="/manager/manageorders" class="navactive"  th:text="#{message46}">Client orders</a>
                 <li>
             </ul>
             <ul>
@@ -39,17 +39,17 @@
     <div class="home-page main">
         <div class="container" align="left">
             <div th:if="${not #lists.isEmpty(clients)}">
-                <h2>List of client's accounts</h2>
+                <h2 th:text="#{message52}"></h2>
                 <table class="table" id="orders" border=1 bordercolor="#000000" cellpadding=10>
                     <tr>
-                        <th>Name</th>
-                        <th>Account ammount</th>
-                        <th>Refill balance</th>
+                        <th th:text="#{message42}"></th>
+                        <th  th:text="#{message47}"></th>
+                        <th  th:text="#{message48}"></th>
                     </tr>
                     <tr th:each="client : ${clients}">
                         <td th:text="${client.userName}"></td>
                         <td th:text="${client.account}"></td>
-                        <td><a th:href="${'/manager/addmoney/' + client.userName}">Add money</a></td>
+                        <td><a th:href="${'/manager/addmoney/' + client.userName}" th:text="#{message49}"></a></td>
                     </tr>
                 </table>
             </div>

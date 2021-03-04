@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <title>Manager cabinet</title>
+    <title th:text="#{message40}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{/css/style.css}">
 </head>
@@ -14,13 +14,13 @@
     <header id="navtop">
         <nav class="logo fleft">
             <img th:src="@{/images/logo_old_logo.png}" alt="Repair Agency">
-            <a href="/" class="navactive">Repair agency "Anti butter-fingers!"</a>
+            <a href="/" class="navactive" th:text="#{message8}"></a>
         </nav>
         <nav class="fright">
             <ul>
-                <li><a href="/" class="navactive">Home</a>
+                <li><a href="/" class="navactive" th:text="#{message9}"></a>
                 <li>
-                <li><a href="/manager/manageuseracounts" class="navactive">Client accounts</a>
+                <li><a href="/manager/manageuseracounts" class="navactive" th:text="#{message41}"></a>
                 <li>
             </ul>
             <ul>
@@ -39,19 +39,19 @@
     <div class="home-page main">
         <div class="container" align="left">
             <div th:if="${not #lists.isEmpty(orders)}">
-                <h2>List of orders</h2>
+                <h2 th:text="#{message30}"></h2>
                 <table class="table" id="orders" border=1 bordercolor="#000000" cellpadding=10>
                     <tr>
-                        <th>Client name</th>
-                        <th>Category</th>
-                        <th>Model</th>
-                        <th>Description</th>
-                        <th>Payment info</th>
-                        <th>Progress info</th>
-                        <th>Master name</th>
-                        <th>Price</th>
-                        <th>Change status</th>
-                        <th>Choose master</th>
+                        <th th:text="#{message42}"></th>
+                        <th th:text="#{message17}"></th>
+                        <th th:text="#{message19}"></th>
+                        <th th:text="#{message18}"></th>
+                        <th th:text="#{message20}"></th>
+                        <th th:text="#{message21}"></th>
+                        <th th:text="#{message43}"></th>
+                        <th th:text="#{message22}"></th>
+                        <th th:text="#{message31}"></th>
+                        <th th:text="#{message44}"></th>
                     </tr>
                     <tr th:each="order : ${orders}">
                         <td th:text="${order.clientId?.userName}"></td>
@@ -62,9 +62,9 @@
                         <td th:text="${order.stateMaster}"></td>
                         <td th:text="${order.masterId}"></td>
                         <td th:text="${order.orderPrice}"></td>
-                        <td><a th:href="@{/manager/changepaymentstatus/{id}(id=${order.id})}">Change payment status</a>
+                        <td><a th:href="@{/manager/changepaymentstatus/{id}(id=${order.id})}" th:text="#{message45}"></a>
                         </td>
-                        <td><a th:href="@{/manager/choosemaster/{id}(id=${order.id})}">Choose master</a></td>
+                        <td><a th:href="@{/manager/choosemaster/{id}(id=${order.id})}" th:text="#{message44}"></a></td>
                     </tr>
                 </table>
             </div>

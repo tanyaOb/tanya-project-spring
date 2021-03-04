@@ -3,13 +3,21 @@ package com.project.aynat.dto;
 import com.project.aynat.domain.Order;
 import com.project.aynat.domain.Role;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AgencyUserDTO {
     private Long id;
     private Role userRole;
+    @NotNull(message = "User name is mandatory")
+    @Email(message = "Email should be valid")
+    @Size(min = 2, max = 40, message = "User name should be between 2 and 40 characters")
     private String userName;
+    @NotNull(message = "Password is mandatory")
+    @Size(min = 5, max = 20, message = "Password size should be between 2 and 20 characters")
     private String password;
     private Integer account;
     private boolean active;

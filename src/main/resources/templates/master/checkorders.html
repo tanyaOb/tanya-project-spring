@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <title>Master cabinet</title>
+    <title th:text="#{message34}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{/css/style.css}">
 </head>
@@ -14,11 +14,11 @@
     <header id="navtop">
         <nav class="logo fleft">
             <img th:src="@{/images/logo_old_logo.png}" alt="Repair Agency">
-            <a href="/" class="navactive">Repair agency "Anti butter-fingers!"</a>
+            <a href="/" class="navactive" th:text="#{message8}"></a>
         </nav>
         <nav class="fright">
             <ul>
-                <a href="/" class="navactive">Home</a>
+                <a href="/" class="navactive" th:text="#{message9}"></a>
             </ul>
             <ul>
                 <a th:href="@{'?locale=en'}">
@@ -36,16 +36,16 @@
     <div class="home-page main">
         <div class="container" align="left">
             <div th:if="${not #lists.isEmpty(orders)}">
-                <h2>List of orders</h2>
+                <h2 th:text="#{message30}"></h2>
                 <table class="table" id="orders" border=1 bordercolor="#000000" cellpadding=10>
                     <tr>
-                        <th>Category</th>
-                        <th>Model</th>
-                        <th>Description</th>
-                        <th>Progress info</th>
-                        <th>Price</th>
-                        <th>Change status</th>
-                        <th>Assign price</th>
+                        <th th:text="#{message17}"></th>
+                        <th th:text="#{message19}"></th>
+                        <th th:text="#{message18}"></th>
+                        <th th:text="#{message21}"></th>
+                        <th th:text="#{message22}"></th>
+                        <th th:text="#{message31}"></th>
+                        <th th:text="#{message32}"></th>
                     </tr>
                     <tr th:each="order : ${orders}">
                         <td th:text="${order.category}"></td>
@@ -53,8 +53,8 @@
                         <td th:text="${order.description}"></td>
                         <td th:text="${order.stateMaster}"></td>
                         <td th:text="${order.orderPrice}"></td>
-                        <td><a th:href="@{/master/changeprogresstatus/{id}(id=${order.id})}">Change</a></td>
-                        <td><a th:href="@{/master/assignprice/{id}(id=${order.id})}">Assign price</a></td>
+                        <td><a th:href="@{/master/changeprogresstatus/{id}(id=${order.id})}" th:text="#{message33}"></a></td>
+                        <td><a th:href="@{/master/assignprice/{id}(id=${order.id})}" th:text="#{message32}"></a></td>
                     </tr>
                 </table>
             </div>

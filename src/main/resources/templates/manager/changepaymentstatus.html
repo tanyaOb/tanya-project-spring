@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <title>Change payment status</title>
+    <title th:text="#{message45}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{/css/style.css}">
 </head>
@@ -13,12 +13,12 @@
     <header id="navtop">
         <nav class="logo fleft">
             <img th:src="@{/images/logo_old_logo.png}" alt="Repair Agency">
-            <a href="/" class="navactive">Repair agency "Anti butter-fingers!"</a>
+            <a href="/" class="navactive" th:text="#{message8}"></a>
         </nav>
         <nav class="fright">
             <ul>
-                </li><a href="/" class="navactive">Home</a></li>
-                <li><a href="/manager/manageorders">View orders</a></li>
+                </li><a href="/" class="navactive" th:text="#{message9}"></a></li>
+                <li><a href="/manager/manageorders" th:text="#{message35}"></a></li>
             </ul>
             <ul>
                 <a th:href="@{'?locale=en'}">
@@ -38,7 +38,7 @@
             <div class="slider grid col-one-half mq2-col-full">
                 <p></p>
                 <p></p>
-                <h2>Please choose payment status</h2>
+                <h2 th:text="#{message51}"></h2>
                 <form th:action="@{/manager/changepaymentstatus}" method="post">
                     <input type="hidden" th:value="${order_id}" name="orderId">
                     <select name="paymentStatus" class="checkField">
@@ -49,7 +49,7 @@
                     </select>
                     <p></p>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                    <div><input type="submit" class="custom_button" value="Save"/></div>
+                    <div><input type="submit" class="custom_button" th:value="#{message38}"/></div>
                 </form>
                 <p></p>
                 <h3 th:text="${message}"></h3>

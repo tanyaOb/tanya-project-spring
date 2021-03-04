@@ -4,16 +4,19 @@ import com.project.aynat.domain.AgencyUser;
 import com.project.aynat.domain.Order;
 import com.project.aynat.domain.Role;
 import com.project.aynat.domain.StateManager;
+import com.project.aynat.dto.AccountDTO;
 import com.project.aynat.service.OrderService;
 import com.project.aynat.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
-
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -31,7 +34,7 @@ public class ManagerController {
 
     @GetMapping("/manager/manageorders")
     public String manageOrders(Map<String, Object> model) {
-        Iterable<Order> orders = orderService.findAllOrders();
+        List<Order> orders = orderService.findAllOrders();
         model.put("orders", orders);
         return "manager/manageorders";
     }
@@ -56,13 +59,24 @@ public class ManagerController {
     }
 
     @PostMapping("/manager/addmoney")
-    public void addMoneyUserAccount(String clientName, int ammount, Map<String, Object> model) {
-        Boolean status = userService.loadMoneyOnUserAccount(clientName, ammount);
+    public String addMoneyUserAccount(@Valid AccountDTO accountDTO, BindingResult bindingResult, Map<String, Object> model) {
+        if (bindingResult.hasErrors()) {
+            for (Object object : bindingResult.getAllErrors()) {
+                if (object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    model.put("message", fieldError.getDefaultMessage());
+                    return "/manager/addmoney";
+                }
+            }
+        }
+
+        boolean status = userService.loadMoneyOnUserAccount(accountDTO);
         if (status) {
-            model.put("message", "Money succesfully added!");
+            model.put("message", "Money successfully added!");
         } else {
             model.put("message", "Some problem occured!");
         }
+        return "/manager/addmoney";
     }
 
     @GetMapping("/manager/choosemaster/{id}")
@@ -74,8 +88,8 @@ public class ManagerController {
     }
 
     @PostMapping("/manager/choosemaster")
-    public void changeMaster(@RequestParam String masterForOrder, Long orderId, Map<String, Object> model) {
-        Boolean status = orderService.chooseMaster(orderId, masterForOrder);
+    public void chooseMasterForOrder(@RequestParam String masterForOrder, Long orderId, Map<String, Object> model) {
+        boolean status = orderService.chooseMaster(orderId, masterForOrder);
         if (status) {
             model.put("message", "Master successfully added!");
         } else {
@@ -84,8 +98,8 @@ public class ManagerController {
     }
 
     @PostMapping("/manager/changepaymentstatus")
-    public void changePayment(StateManager paymentStatus, Long orderId, Map<String, Object> model) {
-        Boolean status = orderService.choosePaymentStatus(orderId, paymentStatus);
+    public void changePaymentStatus(StateManager paymentStatus, Long orderId, Map<String, Object> model) {
+        boolean status = orderService.choosePaymentStatus(orderId, paymentStatus);
         if (status) {
             model.put("message", "Payment status successfully changed!");
         } else {

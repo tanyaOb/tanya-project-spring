@@ -37,7 +37,7 @@
     <div class="home-page main">
         <div class="container" align="left">
             <div th:if="${not #lists.isEmpty(orders)}">
-                <h2>My orders</h2>
+                <h2 th:text="#{message28}"></h2>
                 <table class="table table-striped" id="orders" border=1 bordercolor="#000000" cellpadding=10>
                     <tr>
                         <th th:text="#{message17}"></th>

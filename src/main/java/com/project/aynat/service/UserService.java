@@ -2,7 +2,11 @@ package com.project.aynat.service;
 
 import com.project.aynat.domain.AgencyUser;
 import com.project.aynat.domain.Role;
+import com.project.aynat.dto.AccountDTO;
+import com.project.aynat.dto.AgencyUserDTO;
 import com.project.aynat.repository.UserRepository;
+import com.project.aynat.util.DTOtoAgencyUser;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+    private static final Logger LOG = Logger.getLogger(UserService.class);
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -19,39 +24,30 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public AgencyUser getId(String username) {
-        AgencyUser agencyUser = userRepository.findByUserName(username);
-        return agencyUser;
-    }
+    @Autowired
+    private DTOtoAgencyUser dtOtoAgencyUserConverter;
 
     public List<AgencyUser> finAllByUserRole(Role role) {
-        List<AgencyUser> clients = userRepository.findAllByUserRole(role);
-        return clients;
+        return userRepository.findAllByUserRole(role);
     }
 
-    @Transactional
-    public boolean loadMoneyOnUserAccount(String clientName, int ammount) {
+    public boolean loadMoneyOnUserAccount(AccountDTO accountDTO) {
         try {
-            AgencyUser client = userRepository.findByUserName(clientName);
-            if (client.getAccount() == null) {
-                client.setAccount(ammount);
-            } else {
-                client.setAccount(client.getAccount() + ammount);
-            }
-            userRepository.save(client);
+            userRepository.updateAccountBalance(accountDTO.getUserName(), accountDTO.getAccount());
         } catch (Exception e) {
+            LOG.error("Problem occurred while adding money to client account", e);
             return false;
         }
         return true;
     }
 
     public List<AgencyUser> findAllMasters(Role role) {
-        List<AgencyUser> users = userRepository.findAllByUserRole(role);
-        return users;
+        return userRepository.findAllByUserRole(role);
     }
 
     @Transactional
-    public String addUserToDB(AgencyUser user) {
+    public String addUserToDB(AgencyUserDTO userDTO) {
+        AgencyUser user = dtOtoAgencyUserConverter.convert(userDTO);
         AgencyUser userFromDb = userRepository.findByUserName(user.getUserName());
 
         if (userFromDb != null) {
